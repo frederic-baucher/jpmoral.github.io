@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Curiouser</title>
+    <description>A blog mostly about coding in Ruby.  May contain some Python.
+</description>
+    <link>http://jpmoral.com/</link>
+    <atom:link href="http://jpmoral.com/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sat, 20 Jun 2015 23:59:17 +0800</pubDate>
+    <lastBuildDate>Sat, 20 Jun 2015 23:59:17 +0800</lastBuildDate>
+    <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Better X by learning Y</title>
+        <description>&lt;h4 id=&quot;or-how-i-learned-what-enumerators-are-for&quot;&gt;(or, how I learned what enumerators are for)&lt;/h4&gt;
+
+&lt;p&gt;The Enumerable&lt;sup id=&quot;fnref:enumerable&quot;&gt;&lt;a href=&quot;#fn:enumerable&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; module is one of the most used in Ruby.  I often read its docs to see what methods are available and how they’re used.  One phrase that jumped out at me when I first started Ruby was&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;If no block is given, an enumerator is returned instead.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This shows up in various forms in a lot of the method descriptions.  According to the docs Enumerator&lt;sup id=&quot;fnref:enumerator&quot;&gt;&lt;a href=&quot;#fn:enumerator&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; is&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A class which allows both internal and external iteration.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I was puzzled.  Calling, say, &lt;code&gt;each_with_index&lt;/code&gt; without a block argument returned an enumerator which I could then later iterate over.  I thought, why not just pass the block in the first place and be done with it?  I filed the question away in my head.&lt;/p&gt;
+
+&lt;p&gt;Some two years later I took Peter Norvig’s Design of Computer Programs class on Udacity&lt;sup id=&quot;fnref:udacity&quot;&gt;&lt;a href=&quot;#fn:udacity&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;.  There I encountered Python’s awesome generators and iterators.  I’m not going to go into detail here, I’ll just say that these tools allow lazy evaluation of collection&lt;sup id=&quot;fnref:foot&quot;&gt;&lt;a href=&quot;#fn:foot&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt; items, which means you don’t have to load the entire collection all at once.&lt;/p&gt;
+
+&lt;p&gt;I found this very exciting, but for some reason I didn’t make the connection to Ruby’s Enumerator.  The ‘a-ha!’ moment came only after I did a search for ‘Ruby lazy evaluation’.&lt;/p&gt;
+
+&lt;p&gt;I’ve always believed that studying languages other than your ‘main’ one makes you a better programmer, but in this case I especially like how I learned how to use a language feature by seeing it in another language.&lt;/p&gt;
+
+&lt;p&gt;If you’re curious about enumerators and generators here are a few links to check out:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/20394909/how-to-use-an-enumerator&quot;&gt;How to use an enumerator (Stack Overflow question)&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://patshaughnessy.net/2013/4/3/ruby-2-0-works-hard-so-you-can-be-lazy&quot;&gt;Ruby 2.0 Works Hard So You Can Be Lazy&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/102535/what-can-you-use-python-generator-functions-for&quot;&gt;What can you use Python generator functions for? (Stack Overflow question)&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://www.dabeaz.com/generators/&quot;&gt;Generator Tricks for Systems Programmers&lt;/a&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;&lt;em&gt;Why, sometimes I’ve believed as many as six impossible things before breakfast.&lt;/em&gt; &lt;br /&gt;
+– The White Queen in &lt;em&gt;Through the Looking-Glass&lt;/em&gt; by Lewis Carroll &lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:enumerable&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;http://ruby-doc.org/core-2.2.2/Enumerable.html&quot;&gt;Ruby 2.2.2 Enumerable docs&lt;/a&gt; &lt;a href=&quot;#fnref:enumerable&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:enumerator&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;http://ruby-doc.org/core-2.2.0/Enumerator.html&quot;&gt;Ruby 2.2.0 Enumerator docs&lt;/a&gt; &lt;a href=&quot;#fnref:enumerator&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:udacity&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://www.udacity.com/course/design-of-computer-programs--cs212&quot;&gt;Design of Computer Programs course&lt;/a&gt; &lt;a href=&quot;#fnref:udacity&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:foot&quot;&gt;
+      &lt;p&gt;Lists, arrays, etc., &lt;em&gt;not&lt;/em&gt; the Python collection module &lt;a href=&quot;#fnref:foot&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 21 Jun 2015 00:00:00 +0800</pubDate>
+        <link>http://jpmoral.com/ruby/python/2015/06/21/better-ruby-through-python.html</link>
+        <guid isPermaLink="true">http://jpmoral.com/ruby/python/2015/06/21/better-ruby-through-python.html</guid>
+        
+        
+        <category>ruby</category>
+        
+        <category>python</category>
+        
+      </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,12 @@
+# Site settings
+title: Curiouser
+description: > # this means to ignore newlines until "baseurl:"
+  A blog mostly about coding in Ruby.  May contain some Python.
+url: "http://jpmoral.com" # the base hostname & protocol for your site
+github_username:  jpmoral
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: true
