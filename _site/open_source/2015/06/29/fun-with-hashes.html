@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Hashes vs. case statements, Part 1</title>
+    <meta name="description" content="A blog mostly about coding in Ruby.  May contain some Python.
+">
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="canonical" href="http://jpmoral.com/open_source/2015/06/29/fun-with-hashes.html">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Curiouser</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Hashes vs. case statements, Part 1</h1>
+    <p class="post-meta">Jun 29, 2015</p>
+  </header>
+
+  <article class="post-content">
+    <h4 id="or-sometimes-fun-isnt-necessarily-best">(or, sometimes fun isn’t necessarily best)</h4>
+
+<p>A few weeks back I needed to write some code that would take a string as input and produce an output string according to rules similar to the following:</p>
+
+<ul>
+  <li>Strings beginning with ‘Foo’ =&gt; ‘group A’</li>
+  <li>Strings beginning with ‘F’ (but not ‘Foo’) =&gt; ‘group B’</li>
+  <li>Strings beginning with ‘Bar’ =&gt; ‘group C’</li>
+  <li>Strings beginning with ‘Baz’ =&gt; same string, but replace all ‘a’s with ‘0’s</li>
+</ul>
+
+<p>The ruleset was small, and the number of input strings was not particularly large, maybe in the tens to low hundreds.  </p>
+
+<p>Implementing this with a Hash, regex, and lambdas sounded like fun, so I did that.</p>
+
+<p>Here are the specs:</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># string_lookup_spec.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>require <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">string_lookup</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>describe <span style="color:#036;font-weight:bold">StringLookup</span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  subject { <span style="color:#036;font-weight:bold">StringLookup</span> }
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">assigns strings beginning with 'Foo' to 'group A'</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    expect(subject.lookup(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Foobar</span><span style="color:#710">'</span></span>)).to eq <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">group A</span><span style="color:#710">'</span></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">assigns strings beginning with 'F' but not 'Foo' to 'group A'</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    expect(subject.lookup(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Fbar</span><span style="color:#710">'</span></span>)).to eq <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">group B</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">assigns strings beginning with 'Foo' to 'group A'</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>    expect(subject.lookup(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Bar</span><span style="color:#710">'</span></span>)).to eq <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">group C</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>  it <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">strings beginning with 'Baz' have 'a's changed to '0's</span><span style="color:#710">&quot;</span></span> <span style="color:#080;font-weight:bold">do</span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>    expect(subject.lookup(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">Bazaz</span><span style="color:#710">'</span></span>)).to eq <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">B0z0z</span><span style="color:#710">'</span></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>and the code:</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#777"># string_lookup.rb</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">RegexAndLambdaHash</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">value_for_key_matching</span>(string)
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    pattern = <span style="color:#069">self</span>.keys.find { |key| key =~ string }
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    value_for(pattern, string)
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">value_for</span>(pattern_key, original_key)
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    value = <span style="color:#069">self</span>[pattern_key]
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    <span style="color:#080;font-weight:bold">if</span> value.respond_to? <span style="color:#A60">:call</span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>      value.call(original_key)
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    <span style="color:#080;font-weight:bold">else</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>      value
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span><span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">StringLookup</span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>  <span style="color:#036;font-weight:bold">LOOKUP</span> = {
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>    <span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">^Foo.*$</span><span style="color:#404">/</span></span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">group A</span><span style="color:#710">'</span></span>,
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>    <span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">^F.*$</span><span style="color:#404">/</span></span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">group B</span><span style="color:#710">'</span></span>,
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>    <span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">^Bar.*$</span><span style="color:#404">/</span></span> =&gt; <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">group C</span><span style="color:#710">'</span></span>,
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>    <span style="background-color:hsla(300,100%,50%,0.06)"><span style="color:#404">/</span><span style="color:#808">^Baz.*$</span><span style="color:#404">/</span></span> =&gt; lambda { |x| x.gsub(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">a</span><span style="color:#710">'</span></span>,<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">0</span><span style="color:#710">'</span></span>) },
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>  }.extend <span style="color:#036;font-weight:bold">RegexAndLambdaHash</span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>  <span style="color:#080;font-weight:bold">def</span> <span style="color:#069">self</span>.<span style="color:#06B;font-weight:bold">lookup</span>(string)
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>    <span style="color:#036;font-weight:bold">LOOKUP</span>.value_for_key_matching(string)
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span><span style="color:#080;font-weight:bold">end</span>
+</pre></div>
+</div>
+</div>
+
+<p>Let’s see what this does.  <code>LOOKUP</code> is defined with regexes as keys and the desired strings as values.  <code>RegexAndLambdaHash#value_for_key_matching</code> allows strings to be matched to the regex keys.  <code>#value_for</code> returns the corresponding hash value or calls the lambda.</p>
+
+<p>This code was fun to write, but there are some problems.</p>
+
+<ul>
+  <li><code>#value_for_key_matching</code> can’t handle string keys</li>
+  <li><code>RegexAndLambdaHash</code> will have to be maintained</li>
+  <li>for Ruby versions older than 1.9 <code>LOOKUP</code> will have to be an <code>ActiveSupport::OrderedHash</code>.  This is because prior to 1.9 hashes were unordered</li>
+</ul>
+
+<p>In the next post let’s see if a <code>case</code> statement works better.</p>
+
+
+  </article>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Curiouser</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+          <li>Curiouser</li>
+          <li><a href="mailto:jp@jpmoral.com">jp@jpmoral.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jpmoral">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">jpmoral</span>
+            </a>
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">A blog mostly about coding in Ruby.  May contain some Python.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
