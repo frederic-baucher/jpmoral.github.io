@@ -2,7 +2,7 @@
 layout: post
 title: "Hashes vs. case statements, Part 1"
 date: 2015-06-29
-categories: open_source
+categories: ruby
 ---
 #### (or, sometimes fun isn't necessarily best)
 
