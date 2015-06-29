@@ -19,7 +19,7 @@ Implementing this with a Hash, regex, and lambdas sounded like fun, so I did tha
 
 Here are the specs:
 
-```ruby
+{% highlight ruby %}
 # string_lookup_spec.rb
 require 'string_lookup'
 
@@ -42,11 +42,11 @@ describe StringLookup do
     expect(subject.lookup('Bazaz')).to eq 'B0z0z'
   end
 end
-```
+{% endhighlight %}
 
 and the code:
 
-```ruby
+{% highlight ruby %}
 # string_lookup.rb
 module RegexAndLambdaHash
   def value_for_key_matching(string)
@@ -78,7 +78,7 @@ module StringLookup
     LOOKUP.value_for_key_matching(string)
   end
 end
-```
+{% endhighlight %}
 
 Let's see what this does.  `LOOKUP` is defined with regexes as keys and the desired strings as values.  `RegexAndLambdaHash#value_for_key_matching` allows strings to be matched to the regex keys.  `#value_for` returns the corresponding hash value or calls the lambda.
 
