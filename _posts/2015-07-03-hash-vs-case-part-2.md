@@ -14,7 +14,7 @@ In the [last post]({% post_url 2015-06-29-fun-with-hashes %}) I wrote about how 
 
 Implementing this using `case` is pretty straightforward:
 
-```ruby
+{% highlight ruby %}
 module StringLookup
 
   def self.lookup(string)
@@ -27,7 +27,7 @@ module StringLookup
   end
 
 end
-```
+{% endhighlight %}
 
 That's it.  No extra module, no mix-ins.  All the original specs still pass with this code.  This code is a bit more boring than the Hash code, but that's a good thing.  It's a lot simpler, easier to read and understand, and there's less to maintain.  
 
