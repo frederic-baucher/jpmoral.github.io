@@ -88,7 +88,7 @@ This code was fun to write, but there are some problems.
 - `RegexAndLambdaHash` will have to be maintained
 - for Ruby versions older than 1.9 `LOOKUP` will have to be an `ActiveSupport::OrderedHash`.  This is because prior to 1.9 hashes were unordered
 
-In the next post let's see if a `case` statement works better.  
+In the [next post]({% post_url 2015-07-03-hash-vs-case-part-2 %}) let's see if a `case` statement works better.
   
 <br/>
 
