@@ -46,9 +46,9 @@ My pull request was merged recently so it remains to be seen what fixes, if any,
 
 #### Key Takeaways
 
-- It's easier to start contributing to a project you're familiar with.
-- Think about your changes before you make them.
-- Be ready to accept constructive criticism.  Discussion helps produce better code and make everyone a better programmer.
+- It's easier to start contributing to a project you're familiar with.  It's easier to find an itch to scratch, even though it might not be your own.
+- Think about the changes you want to make before writing any code, but don't over-engineer your design either.
+- Be ready to accept constructive criticism.  Discussion helps produce better code and makes everyone a better programmer.
 
 It might be hard for some people to find a project and put themselves and their code out there, but I hope this helps someone to start contributing.
 
