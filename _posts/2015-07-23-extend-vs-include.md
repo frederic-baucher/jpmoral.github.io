@@ -26,6 +26,7 @@ module behavior can be *mixed-in* to other objects
 </section>
 <section>
     <section data-markdown>
+        <pre><code>
 ```ruby
 module Motion
   def default_movement
@@ -50,8 +51,10 @@ class Bird
   include Flight
 end
 ```
+        </code></pre>
     </section>
     <section data-markdown>
+        <pre><code>
 ```ruby
 RSpec.describe "Ruby composition methods" do
   describe "extend" do
@@ -87,10 +90,12 @@ RSpec.describe "Ruby composition methods" do
   end
 end
 ```
+        </code></pre>
     </section>
 </section>
 <section>
     <section data-markdown>
+        <pre><code>
 ```ruby
 module Motion
   def default_movement
@@ -117,8 +122,10 @@ end
 
 class Cat; end
 ```
+        </code></pre>
     </section>
     <section data-markdown>
+        <pre><code>
 ```ruby
 RSpec.describe "Ruby composition methods" do
   describe "include" do
@@ -147,6 +154,7 @@ RSpec.describe "Ruby composition methods" do
   end
 end
 ```
+        </code></pre>
     </section>
 </section>
 <section data-markdown>
