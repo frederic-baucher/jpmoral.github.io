@@ -50,6 +50,8 @@ end
 class Bird
   include Flight
 end
+
+class Cat; end
 ```
         </code></pre>
     </section>
