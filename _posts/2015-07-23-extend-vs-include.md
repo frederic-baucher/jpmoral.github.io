@@ -2,7 +2,7 @@
 layout: slide
 title: "Composition in Ruby: extend vs. include"
 date: 2015-07-23
-categories: ruby
+categories: presentation ruby
 theme: league
 transition: slide
 ---
