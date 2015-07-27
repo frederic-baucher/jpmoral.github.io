@@ -1,6 +1,6 @@
 ---
 layout: slide
-title: "Composition in Ruby: extend vs. include"
+title: "Ruby meetup 7/23/2015: extend vs. include"
 date: 2015-07-23
 categories: presentation ruby
 theme: league
