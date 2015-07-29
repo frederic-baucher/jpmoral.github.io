@@ -68,7 +68,7 @@ At this point the main page still lists the presentations along with the regular
 
 If you have a vanilla Jekyll blog your `index.html` contains code like this:
 
-```html
+{% highlight html linenos=table %}
 {% raw %}<ul class="post-list">
   {% for post in site.posts %}
     <li>
@@ -79,11 +79,11 @@ If you have a vanilla Jekyll blog your `index.html` contains code like this:
     </li>
   {% endfor %}
 </ul>{% endraw %}
-```
+{% endhighlight %}
 
 Assuming you add a "presentation" tag to your presentations, the following will only display regular posts:
 
-```html
+{% highlight html linenos=table %}
 {% raw %}<ul class="post-list">
   {% for post in site.posts %}
     {% if post.categories contains "presentation" %}
@@ -98,13 +98,13 @@ Assuming you add a "presentation" tag to your presentations, the following will 
     {% endif %}
   {% endfor %}
 </ul>{% endraw %}
-```
+{% endhighlight %}
 
 The difference is that we are telling Jekyll not to display anything if a post's categories includes "presentation".
 
 Next, display a list of presentations on the presentation page.  In the `index.html` created in step 4:
 
-```html
+{% highlight html linenos=table %}
 {% raw %}---
 layout: default
 title: Presentations
@@ -123,7 +123,7 @@ title: Presentations
   </ul>
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 </div>{% endraw %}
-```
+{% endhighlight %}
 
 This is almost identical to the main index, except instead of `site.posts` we use `site.categories.presentation`, which is a Jekyll variable that lists all posts with a category of "presentation".
 
