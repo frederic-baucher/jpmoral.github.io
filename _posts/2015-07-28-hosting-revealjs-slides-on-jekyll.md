@@ -68,7 +68,7 @@ At this point the main page still lists the presentations along with the regular
 
 If you have a vanilla Jekyll blog your `index.html` contains code like this:
 
-{% highlight html %}
+{% highlight html linenos=table %}
 {% raw %}<ul class="post-list">
   {% for post in site.posts %}
     <li>
@@ -83,7 +83,7 @@ If you have a vanilla Jekyll blog your `index.html` contains code like this:
 
 Assuming you add a "presentation" tag to your presentations, the following will only display regular posts:
 
-{% highlight html %}
+{% highlight html linenos=table %}
 {% raw %}<ul class="post-list">
   {% for post in site.posts %}
     {% if post.categories contains "presentation" %}
@@ -104,7 +104,7 @@ The difference is that we are telling Jekyll not to display anything if a post's
 
 Next, display a list of presentations on the presentation page.  In the `index.html` created in step 4:
 
-{% highlight html %}
+{% highlight html linenos=table %}
 {% raw %}---
 layout: default
 title: Presentations
