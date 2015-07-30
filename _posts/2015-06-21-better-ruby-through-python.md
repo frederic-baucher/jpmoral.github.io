@@ -3,6 +3,7 @@ layout: post
 title: "Better X by learning Y"
 date: 2015-06-21
 categories: ruby python
+comments: true
 ---
 #### (or, how I learned what enumerators are for)
 

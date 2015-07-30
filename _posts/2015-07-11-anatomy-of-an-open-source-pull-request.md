@@ -3,6 +3,7 @@ layout: post
 title: "Anatomy of an Open Source Pull Request"
 date: 2015-07-11
 categories: ruby
+comments: true
 ---
 
 One of the great things about coding is the availability of a wide-range of open source libraries and plugins.  Ruby, for example, has a vibrant gem ecosystem that helps programmers focus on the problem domain and makes programming more fun.

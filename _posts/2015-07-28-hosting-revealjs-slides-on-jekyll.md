@@ -3,6 +3,7 @@ layout: post
 title: "Hosting Reveal.js Slide Decks on a Jekyll-generated blog"
 date: 2015-07-29
 categories: blogging
+comments: true
 ---
 
 ## The Why

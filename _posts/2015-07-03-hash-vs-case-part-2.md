@@ -3,6 +3,7 @@ layout: post
 title: "Hashes vs. case statements, Part 2"
 date: 2015-07-03
 categories: ruby
+comments: true
 ---
 
 In the [last post]({% post_url 2015-06-29-fun-with-hashes %}) I wrote about how I implemented a Hash with regex keys and lambda values.  Here's the desired output:
