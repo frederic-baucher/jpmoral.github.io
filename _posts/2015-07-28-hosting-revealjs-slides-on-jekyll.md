@@ -8,7 +8,7 @@ comments: true
 
 ## The Why
 
-A couple of months ago I was invited by a student organization to give a career talk at the University of the Philippines.  I've never liked using presentation software (Powerpoint/Keynote/Impress, etc.) so I looked around for an alternative.  That's how I found [Reveal.js](http://lab.hakim.se/reveal-js/) which is, according to its description,
+A couple of months ago I was invited by a student organization to give a career talk at the University of the Philippines.  I've never liked using presentation software (Powerpoint/Keynote/Impress, etc.) so I looked around for an alternative.  That's how I found Reveal.js[^reveal] which is, according to its description,
 
 >A framework for easily creating beautiful presentations using HTML.
 
@@ -20,11 +20,11 @@ Indeed.  There are three things I like about Reveal.js:
 
 That last point was especially driven home when I forgot to bring a display output adapter to the talk mentioned above.  Unfortunately, I hadn't uploaded the slides, so I had to copy the Reveal.js library along with the presentation HTML to one of the organizer's machines.  Embarassing.
 
-Last week I gave a short talk at the local Ruby meetup and of course created the slides with Revealjs.  After the earlier episode I decided that since I already had a blog (read: static site generated with [Jekyll](http://jekyllrb.com/) hosted on a GitHub page) I'd host the slides and present them from here.  I was able to do that, but the post with the slides were mixed in (no pun intended) with the other posts.  After some Googling I got all the regular posts on one page, and the slides on another.
+Last week I gave a short talk at the local Ruby meetup and of course created the slides with Revealjs.  After the earlier episode I decided that since I already had a blog (read: static site generated with Jekyll[^jekyll] hosted on a GitHub page) I'd host the slides and present them from here.  I was able to do that, but the post with the slides were mixed in (no pun intended) with the other posts.  After some Googling I got all the regular posts on one page, and the slides on another.
 
 ## The How
 
-Here's a high-level overview, this assumes familiarity with Jekyll and GitHub pages:
+Here's a high-level overview, this assumes familiarity with using Jekyll[^jekyll-github] on GitHub pages[^github-jekyll]:
 
 1. Copy Reveal.js to the site's root directory
 2. Create a layout for slides
@@ -61,7 +61,7 @@ layout: slide
 
 First decide the name for the page you want to host your presentations.  I named mine "slide decks".  Next, create a directory with that name, and an `index.html` in that directory: `slide decks/index.html`.
 
-Jekyll will automatically add a link to `/slide decks` on your blog.  [See more about Jekyll pages](http://jekyllrb.com/docs/pages/).
+Jekyll will automatically add a link to a `/slide decks` page[^jekyll-pages] on your blog.
 
 ### Step 5: Regular posts on main page, presentations on presentation page
 
@@ -135,3 +135,9 @@ That's it!  You can now host and present your slides from your blog.
 ***
 *'Give your evidence,' said the King; 'and don't be nervous, or I'll have you executed on the spot.'* 
 -- *Alice's Adventures in Wonderland* by Lewis Carroll
+
+[^reveal]: [Reveal.js](http://lab.hakim.se/reveal-js/)
+[^jekyll]: [Jekyll](http://jekyllrb.com/)
+[^jekyll-github]: [Jekyll docs about GitHub pages](http://jekyllrb.com/docs/github-pages/)
+[^github-jekyll]: [GitHub docs about using Jekyll](https://help.github.com/articles/using-jekyll-with-pages/)
+[^jekyll-pages]: [Jekyll pages docs](http://jekyllrb.com/docs/pages/)
