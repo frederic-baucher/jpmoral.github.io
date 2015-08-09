@@ -6,27 +6,27 @@ categories: ruby
 comments: true
 ---
 
-Let's dive into some code:
+In this post let's take a look at some metaprogramming, class instance variable, and inheritance.  Let's dive into some code:
 
-{% highlight ruby %}
+{% highlight ruby linenos=table %}
 module Echoer
   def echoes(*phrases)
-    @phrases.concat(phrases)
+    @known_phrases.concat(phrases)
 
-    @phrases.each do |phrase|
+    @known_phrases.each do |phrase|
       next if self.respond_to?(phrase.to_sym)
       define_method("#{phrase}") { phrase.to_s }
     end
   end
 
   def known_phrases
-    @phrases.map do |phrase|
+    @known_phrases.map do |phrase|
       phrase.to_s
     end
   end
 
   def self.extended(mod)
-    mod.instance_variable_set(:@phrases, [])
+    mod.instance_variable_set(:@known_phrases, [])
     mod.send :include, InstanceMethods
   end
 
@@ -47,9 +47,9 @@ class Person
 end
 {% endhighlight %}
 
-Here we've defined a module `Echoer` and a class `Person` that `extends`s it.  To understand what this code does let's try a few examples:
+Here we've defined a module `Echoer` and a class `Person` that `extend`s it.  To understand what this code does let's try a few examples:
 
-{% highlight ruby %}
+{% highlight ruby linenos=table %}
 Person.known_phrases # => ["hello", "goodbye"]
 
 p = Person.new
@@ -72,20 +72,18 @@ Thus `Person`s know how to say "hello" and "goodbye", as well as arbitrary phras
 
 Now, let's try subclassing:
 
-{% highlight ruby %}
+{% highlight ruby linenos=table %}
 class Shopper < Person
 end
 
 s = Shopper.new
 s.hello # => "hello"
 s.goodbye # => "goodbye"
-
-s.known_phrases # => ["hello", "goodbye"]
 {% endhighlight %}
 
 So far, so good.  But wait, there's more:
 
-{% highlight ruby %}
+{% highlight ruby linenos=table %}
 s.known_phrases # => NoMethodError: undefined method `map' for nil:NilClass
 Shopper.known_phrases # => NoMethodError: undefined method `map' for nil:NilClass
 Shopper.echoes :charge # => NoMethodError: undefined method `concat' for nil:NilClass
@@ -93,16 +91,15 @@ Shopper.echoes :charge # => NoMethodError: undefined method `concat' for nil:Nil
 
 `Shopper`s know how to say "hello" and "goodbye", but they don't know that they know it!  Also, we can't add to what a `Shopper` can say.  What's going on?
 
-When we defined `Shopper`, it inherited `hello` and `goodbye` from `Person`.  It did *not* inherit `@phrases`.  This is because `@phrases` is a class instance variable of `Person`.  It is only defined on that class.
+When we defined `Shopper`, it inherited `hello` and `goodbye` from `Person`.  It did *not* inherit `@known_phrases`.  This is because `@known_phrases` is a class instance variable of `Person`.  A class instance variable is an instance variable of a class object.  It is only defined on that class.
 
 Programmers who use the `Echoer` module may be surprised by the inheritance (non-)behavior of `echoes` and `known_phrases`, so let's fix it.
 
 We simply need to add the following to `Echoer`:
 
-{% highlight ruby %}
+{% highlight ruby linenos=table %}
 def inherited(subclass)
   subclass.instance_variable_set(:@known_phrases, @known_phrases)
-  super(subclass)
 end
 {% endhighlight %}
 
@@ -114,7 +111,7 @@ Here we use the `inherited` hook to customize what happens when a class that ext
 
 Now inheritance works as one might expect:
 
-{% highlight ruby %}
+{% highlight ruby linenos=table %}
 Shopper.echoes :charge
 Shopper.known_classes # => ["hello", "goodbye", "charge"]
 
@@ -125,7 +122,7 @@ s.charge # => "charge"
 
 Full code is below.  Leave a comment!
 
-{% highlight ruby %}
+{% highlight ruby linenos=table %}
 module Echoer
   def echoes(*phrases)
     @known_phrases.concat(phrases)
